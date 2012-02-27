@@ -1,17 +1,18 @@
 
 
 Ext.define("Bicycle.view.Main", {
-	extend: "Ext.Panel",
+	extend: "Ext.navigation.View",
 	xtype: 'mainpanel',
 	
 	config: {
+		autoDestroy: false,
         fullscreen: true,
-        layout: 'fit',
 
 		items: 
 		[
 			{
 				xtype: 'map',
+				title: 'Suzhou Bicycle',
 				mapOptions:{
 					center : new google.maps.LatLng( 31.320721, 120.619969),	//nearby San Fran
 					zoom : 18,

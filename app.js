@@ -13,7 +13,7 @@ Ext.define('Ext.overrides.Map', {
 Ext.application({
 	name: "Bicycle",
 	
-	views: ["Main"],
+	views: ["Main", 'Station'],
 	stores: ['Bicycles'],
 	models: ['Bicycle'],
 	controllers: ["BicycleController"],
@@ -21,9 +21,8 @@ Ext.application({
 	launch: function () {
 		Ext.getStore('Bicycles');
         Ext.Viewport.add({
-//			xtype: 'noteslist'
-			xtype: 'mainpanel'
-//			xtype: 'noteeditor'
+//			xtype: 'mainpanel'
+			xtype: 'bicyclestation'
 		});
 	}
 });

@@ -4,18 +4,21 @@ Ext.define("Bicycle.controller.BicycleController", {
 	extend: "Ext.app.Controller",
 	config: {
 		refs: {
-			main: 'map',
+			main: 'mainpanel',
+			map: 'map',
 		},
 		control: {
-			main: {
+			map: {
 				maprender: 'onMapRender',
 			},
 		}
 	},
 	onMapRender : function(comp, map) {
 		'use strict';
+		var self = this;
 
 		console.log('onMapRender');
+		var infowindow = new google.maps.InfoWindow();
 		
 		setTimeout(function(){
 			var bicycles = Ext.getStore('Bicycles');
@@ -32,17 +35,25 @@ Ext.define("Bicycle.controller.BicycleController", {
 				var marker = new google.maps.Marker({
 									map:map,
 									position: pos,
+									title: rec.get('name'),
 									icon: 'resource/' + icon
+				});
+				
+				google.maps.event.addListener(marker, 'click', function() {
+					// infowindow.setContent(rec.get('name'));
+					// infowindow.open(map, this);
+					if (!self.station) 
+					{
+						self.station = Ext.create('Bicycle.view.Station');
+					}
+
+					// Bind the record onto the show contact view
+					self.station.setRecord(rec);
+
+					// Push the show contact view into the navigation view
+					self.getMain().push(self.station);
 				});
 			});
 		}, 100);
-		
-		
-		// google.maps.event.addListener(marker, 'click', function() {
-		// 	console.log('clicked on marker');
-		// 	map.setZoom(8);
-		// });
-		// var darwin = new google.maps.LatLng(-12.461334, 130.841904);
-		// map.setCenter(pos);
 	},
 });
