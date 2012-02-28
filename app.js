@@ -1,7 +1,10 @@
 'use strict';
 /*global Ext*/
 
-Ext.Loader.setConfig({ enabled: true });
+Ext.Loader.setConfig({
+    enabled: true,
+//    paths: { 'Ext': 'touch/src' }
+});
 
 Ext.define('Ext.overrides.Map', {
             override: 'Ext.Map',
@@ -21,8 +24,8 @@ Ext.application({
 	launch: function () {
 		Ext.getStore('Bicycles');
         Ext.Viewport.add({
-//			xtype: 'mainpanel'
-			xtype: 'bicyclestation'
+			xtype: 'mainpanel'
+//			xtype: 'bicyclestation'
 		});
 	}
 });

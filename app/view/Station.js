@@ -1,6 +1,7 @@
 Ext.define('Bicycle.view.Station', {
-	extend: 'Ext.form.FormPanel',
+	extend: 'Ext.form.Panel',
 	xtype: 'bicyclestation',
+	requires: ['Ext.form.FieldSet', 'Ext.Img'],
 
 	config: {
 		
@@ -8,11 +9,6 @@ Ext.define('Bicycle.view.Station', {
 		layout: 'vbox',
 
 		items: [
-		{
-			xtype: 'img',
-			src: 'resource/3.jpg',
-			height: 100
-		},
 			{
 				xtype: 'fieldset',
 				defaults: {
@@ -20,6 +16,11 @@ Ext.define('Bicycle.view.Station', {
 				},
 				title: 'Information',
 				items: [
+					{
+						xtype: 'img',
+						src: 'http://www.subicycle.com/szmap/img/{id}.jpg',
+						id: 'stationimage'
+					},
 
 					{
 						xtype: 'textfield',

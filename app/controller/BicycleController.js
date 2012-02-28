@@ -54,6 +54,6 @@ Ext.define("Bicycle.controller.BicycleController", {
 					self.getMain().push(self.station);
 				});
 			});
-		}, 100);
+		}, 300);
 	},
 });

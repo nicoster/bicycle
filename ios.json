@@ -1,0 +1,21 @@
+{
+    "versionString":"1.0",
+    "iconName":"icon.png",
+	"applicationName":"Bicycle",
+	"applicationId":"com.cisco.bicycles",
+	"inputPath":"/workspace/bicycle",
+	"outputPath":"/workspace/build",
+	"configuration":"Release",
+	
+  	"platform":"ios",
+	"deviceType":"iPhone",
+	
+    "certificateAlias":"iPhone Developer",
+    "orientations": 
+	[
+		"portrait",
+		"landscapeLeft",
+		"landscapeRight",
+		"portraitUpsideDown"
+	]
+}

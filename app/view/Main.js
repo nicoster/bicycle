@@ -3,6 +3,7 @@
 Ext.define("Bicycle.view.Main", {
 	extend: "Ext.navigation.View",
 	xtype: 'mainpanel',
+	requires: ['Ext.Map'],
 	
 	config: {
 		autoDestroy: false,
