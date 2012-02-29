@@ -1,4 +1,4 @@
-/*global google*/
+/*global google, InfoBubble*/
 
 Ext.define("Bicycle.controller.BicycleController", {
 	extend: "Ext.app.Controller",
@@ -18,7 +18,26 @@ Ext.define("Bicycle.controller.BicycleController", {
 		var self = this;
 
 		console.log('onMapRender');
-		var infowindow = new google.maps.InfoWindow();
+//		var infowindow = new google.maps.InfoWindow();
+		
+		var infowindow = new InfoBubble({
+				map: map,
+				content: '<div class="phoneytext">Some label</div>',
+				position: new google.maps.LatLng(-35, 151),
+				shadowStyle: 1,
+				padding: 0,
+				backgroundColor: 'rgb(57,57,57)',
+				borderRadius: 4,
+				arrowSize: 10,
+				borderWidth: 1,
+				borderColor: '#2c2c2c',
+				disableAutoPan: true,
+				hideCloseButton: true,
+				arrowPosition: 30,
+				backgroundClassName: 'phoney',
+				maxWidth: 200,
+				arrowStyle: 0
+			});
 		
 		setTimeout(function(){
 			var bicycles = Ext.getStore('Bicycles');
@@ -45,8 +64,13 @@ Ext.define("Bicycle.controller.BicycleController", {
 				});
 				
 				google.maps.event.addListener(marker, 'click', function() {
-					// infowindow.setContent(rec.get('name'));
-					// infowindow.open(map, this);
+					infowindow.setContent('<div class="phoneytitle">' + rec.get('name')
+						+ '<div class="phoneytext">[' + rec.get('availBike') 
+						+ '/' + rec.get('capacity') + '] ' + rec.get('address') + '</div></div>'
+					);
+					infowindow.open(map, this);
+					return;
+					
 					if (!self.station) 
 					{
 						self.station = Ext.create('Bicycle.view.Station');
@@ -59,6 +83,6 @@ Ext.define("Bicycle.controller.BicycleController", {
 					self.getMain().push(self.station);
 				});
 			});
-		}, 300);
+		}, 800);
 	},
 });
