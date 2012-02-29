@@ -31,12 +31,17 @@ Ext.define("Bicycle.controller.BicycleController", {
 					icon = 'none.png';
 				}
 				
+				icon = 'marker.png';
 				var pos = new google.maps.LatLng(rec.get('lat'), rec.get('lng'));
 				var marker = new google.maps.Marker({
 									map:map,
 									position: pos,
 									title: rec.get('name'),
-									icon: 'resource/' + icon
+									icon: new google.maps.Marker({
+										url: 'resource/' + icon,
+										scaledSize: new google.maps.Size(32, 32),
+										anchor: new google.maps.Point(16, 32)
+									})
 				});
 				
 				google.maps.event.addListener(marker, 'click', function() {
