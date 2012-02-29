@@ -20,6 +20,8 @@
 		.phoneytext {
 			color:#fff;
 			font-size:12px;
-	        padding: 0px 24px 2px 10px;
+	        padding: 0px 16px 3px 10px;
+			white-space: nowrap;
 			text-overflow:ellipsis;
+			overflow: hidden;  
 		}

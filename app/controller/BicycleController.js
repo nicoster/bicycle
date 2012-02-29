@@ -65,8 +65,8 @@ Ext.define("Bicycle.controller.BicycleController", {
 				
 				google.maps.event.addListener(marker, 'click', function() {
 					infowindow.setContent('<div class="phoneytitle">' + rec.get('name')
-						+ '<div class="phoneytext">[' + rec.get('availBike') 
-						+ '/' + rec.get('capacity') + '] ' + rec.get('address') + '</div></div>'
+						+ '[' + rec.get('availBike') 
+						+ '/' + rec.get('capacity') + ']<div class="phoneytext">' + rec.get('address') + '</div></div>'
 					);
 					infowindow.open(map, this);
 					return;
