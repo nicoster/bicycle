@@ -6,17 +6,52 @@ Ext.define("Bicycle.controller.BicycleController", {
 		refs: {
 			main: 'mainpanel',
 			map: 'map',
+			stationImage: '#stationimage',
+			segmentedButton: 'segmentedbutton',
+			stationListView : 'subcontainer list',
+			locateMe: '#locateme',
 		},
 		control: {
 			map: {
 				maprender: 'onMapRender',
 			},
+			segmentedButton: {
+				toggle: 'onSegmentedButtonToggle'
+			},
+			locateMe: {
+				tap: 'onLocateMe'
+			},
 		}
 	},
+	
+	onLocateMe: function(){
+		'use strict';
+		this.map.setCenter(new google.maps.LatLng(31.318283,120.627158));
+	},
+	
+	onSegmentedButtonToggle : function(seg, btn) {
+		'use strict';
+		
+		var m = this.getMap();
+		var s = this.getStationListView();
+		var l = this.getLocateMe();
+		if (btn.config.text === 'Map')
+		{
+			s.hide();
+			m.show();
+			l.enable();
+		} else {
+			s.show();
+			m.hide();
+			l.disable();
+		}
+	},
+		
 	onMapRender : function(comp, map) {
 		'use strict';
 		var self = this;
-
+		this.map = map;
+		
 		console.log('onMapRender');
 //		var infowindow = new google.maps.InfoWindow();
 		
@@ -64,12 +99,12 @@ Ext.define("Bicycle.controller.BicycleController", {
 				});
 				
 				google.maps.event.addListener(marker, 'click', function() {
-					infowindow.setContent('<div class="phoneytitle">' + rec.get('name')
-						+ '[' + rec.get('availBike') 
-						+ '/' + rec.get('capacity') + ']<div class="phoneytext">' + rec.get('address') + '</div></div>'
-					);
-					infowindow.open(map, this);
-					return;
+					// infowindow.setContent('<div class="phoneytitle">' + rec.get('name')
+					// 	+ '[' + rec.get('availBike') 
+					// 	+ '/' + rec.get('capacity') + ']<div class="phoneytext">' + rec.get('address') + '</div></div>'
+					// );
+					// infowindow.open(map, this);
+					// return;
 					
 					if (!self.station) 
 					{
@@ -78,7 +113,8 @@ Ext.define("Bicycle.controller.BicycleController", {
 
 					// Bind the record onto the show contact view
 					self.station.setRecord(rec);
-
+					self.station.config.title = rec.get('name');
+//					self.getStationImage().src = 'http://www.subicycle.com/szmap/img/' + rec.get('id') + '.jpg';
 					// Push the show contact view into the navigation view
 					self.getMain().push(self.station);
 				});

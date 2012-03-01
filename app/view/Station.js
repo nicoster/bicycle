@@ -18,7 +18,7 @@ Ext.define('Bicycle.view.Station', {
 				items: [
 					{
 						xtype: 'img',
-						src: 'http://www.subicycle.com/szmap/img/{id}.jpg',
+//						src: 'http://www.subicycle.com/szmap/img/{id}.jpg',
 						id: 'stationimage'
 					},
 
@@ -46,5 +46,11 @@ Ext.define('Bicycle.view.Station', {
 				]
 			}
 		]
-	}
+	},
+/*	
+	initialize: function() {
+		this.config.title = this.getRecord().get('name');
+		this.callParent();
+	}	
+*/
 });
