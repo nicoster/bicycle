@@ -22,10 +22,8 @@ Ext.application({
 	controllers: ["BicycleController"],
 		
 	launch: function () {
-		Ext.getStore('Bicycles');
         Ext.Viewport.add({
 			xtype: 'mainpanel'
-//			xtype: 'bicyclestation'
 		});
 	}
 });

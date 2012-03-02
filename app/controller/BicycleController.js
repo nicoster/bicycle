@@ -26,7 +26,7 @@ Ext.define("Bicycle.controller.BicycleController", {
 	
 	onLocateMe: function(){
 		'use strict';
-		this.map.setCenter(new google.maps.LatLng(31.318283,120.627158));
+		this.map.panTo(new google.maps.LatLng(31.318283,120.627158));
 	},
 	
 	onSegmentedButtonToggle : function(seg, btn) {

@@ -40,6 +40,7 @@ Ext.define("Bicycle.view.Subcontainer", {
 				
 				items: [
 					{
+						width: '10%',
 						xtype: 'button',
 						iconCls: 'locate',
 						iconMask: true,
@@ -48,6 +49,8 @@ Ext.define("Bicycle.view.Subcontainer", {
 					},
 					
 					{
+						width: '20%',
+						
 						xtype: 'spacer',
 					},
 					
@@ -71,6 +74,8 @@ Ext.define("Bicycle.view.Subcontainer", {
 						]
 					},
 					{
+						width: '30%',
+						
 						xtype: 'spacer',
 					},
 					
