@@ -83,22 +83,5 @@ Ext.define("Bicycle.view.Subcontainer", {
 			},
 		]
 	},
-	
-	initialize2: function() {
-		'use strict';
-//		this.config.title = Oreilly.app.title;
-//		this.callParent();
 
-		var segmentedButton = this.down('segmentedbutton');
-
-		Ext.Array.each([{
-					text: 'Mapx'
-				},
-				{
-					text   : 'List',
-					pressed: true
-				},], function(day) {
-			segmentedButton.add(day);
-		});
-	}
 });

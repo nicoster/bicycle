@@ -1,4 +1,4 @@
-/*global google, InfoBubble*/
+/*global google, InfoBubble, alert, document*/
 
 Ext.define("Bicycle.controller.BicycleController", {
 	extend: "Ext.app.Controller",
@@ -50,12 +50,12 @@ Ext.define("Bicycle.controller.BicycleController", {
 	onMapRender : function(comp, map) {
 		'use strict';
 		var self = this;
-		this.map = map;
+		self.map = map;
 		
 		console.log('onMapRender');
 //		var infowindow = new google.maps.InfoWindow();
 		
-		var infowindow = new InfoBubble({
+		self.infowindow = new InfoBubble({
 				map: map,
 				content: '<div class="phoneytext">Some label</div>',
 				position: new google.maps.LatLng(-35, 151),
@@ -73,6 +73,11 @@ Ext.define("Bicycle.controller.BicycleController", {
 				maxWidth: 200,
 				arrowStyle: 0
 			});
+			
+		// Listen for user click on map to close any open info bubbles
+		google.maps.event.addListener(map, "click", function () { 
+			self.infowindow.close();
+		}); 
 		
 		setTimeout(function(){
 			var bicycles = Ext.getStore('Bicycles');
@@ -99,24 +104,36 @@ Ext.define("Bicycle.controller.BicycleController", {
 				});
 				
 				google.maps.event.addListener(marker, 'click', function() {
-					// infowindow.setContent('<div class="phoneytitle">' + rec.get('name')
-					// 	+ '[' + rec.get('availBike') 
-					// 	+ '/' + rec.get('capacity') + ']<div class="phoneytext">' + rec.get('address') + '</div></div>'
-					// );
-					// infowindow.open(map, this);
-					// return;
-					
-					if (!self.station) 
-					{
-						self.station = Ext.create('Bicycle.view.Station');
+					self.infowindow.setContent('<div id="infowindow" class="phoneytitle">' + rec.get('name')
+						+ '&nbsp;[' + rec.get('availBike') 
+						+ '/' + rec.get('capacity') + ']<div class="phoneytext">' + rec.get('address') + '</div></div>'
+					);
+					if (self.infoWindowHandler) {
+						google.maps.event.removeListener(self.infoWindowHandler);
 					}
 
-					// Bind the record onto the show contact view
-					self.station.setRecord(rec);
-					self.station.config.title = rec.get('name');
-//					self.getStationImage().src = 'http://www.subicycle.com/szmap/img/' + rec.get('id') + '.jpg';
-					// Push the show contact view into the navigation view
-					self.getMain().push(self.station);
+					self.infowindow.open(map, this);
+					
+					//FIXME: as InfoBubble seems not to have a domready event(nor any event), I have to bind the callback by the ugly way.
+					setTimeout(function(){
+						self.infoWindowHandler = google.maps.event.addDomListener(
+							document.getElementById('infowindow'), 'click', function(){
+								if (!self.station) 
+								{
+									self.station = Ext.create('Bicycle.view.Station');
+								}
+
+								// Bind the record onto the show contact view
+								self.station.setRecord(rec);
+								self.station.config.title = rec.get('name');
+
+								// Push the show contact view into the navigation view
+								self.getMain().push(self.station);
+							}
+						);
+					}, 500);					
+					return;
+					
 				});
 			});
 		}, 800);
