@@ -3,17 +3,23 @@
 Ext.define("Bicycle.view.Subcontainer", {
 	extend: "Ext.Panel",
 	xtype: 'subcontainer',
-	requires: ['Ext.Map', 'Ext.SegmentedButton', 'Ext.dataview.List'],
+	requires: [
+		'Ext.Map', 
+		'Ext.SegmentedButton', 
+		'Ext.dataview.List', 
+		'Ext.field.Search',
+		'Ext.Toolbar'
+	],
 	
 	config: {
-        layout: 'vbox',
+		layout: 'vbox',
 
 		items: 
 		[
 			{
 				xtype: 'map',
 				flex: 1,
-                hidden: true,
+				hidden: true,
 				mapOptions:{
 					center : new google.maps.LatLng(31.320721, 120.619969), //nearby San Fran
 					zoom : 14,
@@ -25,7 +31,22 @@ Ext.define("Bicycle.view.Subcontainer", {
 				flex: 1,
 				xtype:'list',
 				store:'Bicycles',
-				itemTpl: '<div>{name}</div><div>{address}</div>',
+				itemTpl: '<div>{name}</div><span>{address}</span>',
+				
+				items: [
+					{
+						xtype: 'toolbar',
+						docked: 'top',
+
+						items: [
+							{
+								width: '92%',
+								xtype: 'searchfield',
+								placeHolder: 'filtering..',
+							},
+						]
+					}
+				]
 			},
 			
 			{

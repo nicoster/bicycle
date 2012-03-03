@@ -10,6 +10,7 @@ Ext.define("Bicycle.controller.BicycleController", {
 			segmentedButton: 'segmentedbutton',
 			stationListView : 'subcontainer list',
 			locateMe: '#locateme',
+			search: 'searchfield',
 		},
 		control: {
 			map: {
@@ -21,7 +22,45 @@ Ext.define("Bicycle.controller.BicycleController", {
 			locateMe: {
 				tap: 'onLocateMe'
 			},
+			search: {
+				clearicontap: 'onSearchClearIconTap',
+				keyup: 'onSearchKeyUp'
+			}
 		}
+	},
+	
+	onSearchClearIconTap: function(){
+		'use strict';
+		
+		Ext.getStore('Bicycles').clearFilter();
+	},
+	
+	onSearchKeyUp: function(field) {
+		'use strict';
+		
+		//get the store and the value of the field
+		var value = field.getValue(),
+			store = Ext.getStore('Bicycles');
+
+		console.log(value);
+		
+		if (! value) {
+			store.clearFilter();
+		}
+		else if (value.indexOf(this.prevCriteria) === -1) {
+			//first clear any current filters on thes tore
+			store.clearFilter();
+			var loop = 0;
+			var reg = new RegExp(value, 'i');
+			store.filter(function(rec) {
+				loop ++;
+				return rec.get('name').match(reg);
+			});			
+			console.log('loop:' + loop);
+		} 
+		
+		this.prevCriteria = store.data.length ? null : value;
+		console.log('prev:' + this.prevCriteria);
 	},
 	
 	onLocateMe: function(){

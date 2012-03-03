@@ -14,13 +14,21 @@ Ext.define('Bicycle.store.Bicycles', {
                 return record.get('name')[0];
             }
         },
+		listeners : {
+			beforeload: 'onBeforeLoad'
+		},
         proxy: {
             type: 'ajax',
-            url: 'http://www.subicycle.com/szmap/ibikestation.asp',
+//            url: 'http://www.subicycle.com/szmap/ibikestation.asp',
+			url: 'bicycles2.json',
 			
 			reader: Ext.create('Bicycle.store.reader.Bicycles',{
 				rootProperty: 'station',
 				})
         }
-    }
+    },
+	
+	onBeforeLoad: function(){
+//		debugger;
+	}
 });
