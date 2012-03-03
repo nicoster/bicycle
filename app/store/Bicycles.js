@@ -1,6 +1,9 @@
+
+
 Ext.define('Bicycle.store.Bicycles', {
     extend: 'Ext.data.Store',
-
+	requires: ['Bicycle.store.reader.Bicycles'],
+	
     config: {
         model: 'Bicycle.model.Bicycle',
         autoLoad: true,
@@ -13,7 +16,11 @@ Ext.define('Bicycle.store.Bicycles', {
         },
         proxy: {
             type: 'ajax',
-            url: 'bicycles.json',
+            url: 'http://www.subicycle.com/szmap/ibikestation.asp',
+			
+			reader: Ext.create('Bicycle.store.reader.Bicycles',{
+				rootProperty: 'station',
+				})
         }
     }
 });

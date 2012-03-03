@@ -3,7 +3,7 @@
 Ext.define("Bicycle.view.Subcontainer", {
 	extend: "Ext.Panel",
 	xtype: 'subcontainer',
-	requires: ['Ext.Map', 'Ext.SegmentedButton'],
+	requires: ['Ext.Map', 'Ext.SegmentedButton', 'Ext.dataview.List'],
 	
 	config: {
         layout: 'vbox',
@@ -40,7 +40,7 @@ Ext.define("Bicycle.view.Subcontainer", {
 				
 				items: [
 					{
-						width: '10%',
+						width: '15%',
 						xtype: 'button',
 						iconCls: 'locate',
 						iconMask: true,
@@ -49,7 +49,7 @@ Ext.define("Bicycle.view.Subcontainer", {
 					},
 					
 					{
-						width: '20%',
+						width: '15%',
 						
 						xtype: 'spacer',
 					},

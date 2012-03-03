@@ -9,18 +9,28 @@
 	      }
 	
 		.phoneytitle {
-		        text-shadow: 0 -1px 0 #000;
+/*			border-style:solid;
+			border-width:1px;
+			border-color:red;			
+*/		        text-shadow: 0 -1px 0 #000;
 		        color: #fff;
 		        font-family: Helvetica Neue, Helvetica, arial;
 		        font-size: 16px;
 		        padding: 4px 40px 0px 8px;
 		        font-weight: bold;
 		        background: url(resource/arrow.png) 95% 50% no-repeat;
+				white-space: nowrap;
+				text-overflow:ellipsis;
+				overflow: hidden;  
 		      }
 		.phoneytext {
+/*			border-style:solid;
+			border-width:1px;
+			border-color:red;			
+*/						
 			color:#fff;
 			font-size:12px;
-	        padding: 0px 16px 3px 10px;
+	        padding: 0px 0px 3px 10px;
 			white-space: nowrap;
 			text-overflow:ellipsis;
 			overflow: hidden;  
