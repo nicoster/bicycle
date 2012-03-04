@@ -28,9 +28,22 @@ Ext.define("Bicycle.controller.BicycleController", {
 				keyup: 'onSearchKeyUp'
 			},
 			stations: {
-                itemtap: 'onStationSelect'
-            },			
+				select: 'onStationSelect',
+				disclose: 'onItemDisclosure'
+			},			
 		}
+	},
+	
+	onItemDisclosure: function(list, rec){
+		'use strict';
+
+		var seg = this.getSegmentedButton();
+		seg.setPressedButtons([seg.getAt(0)]);
+		seg.fireEvent('toggle', seg, seg.getAt(0));
+		
+		var marker = this.markers[rec.get('id')];
+		this.map.panTo(marker.position);
+		google.maps.event.trigger(marker, 'click');
 	},
 	
 	showStation: function(rec){
@@ -48,10 +61,10 @@ Ext.define("Bicycle.controller.BicycleController", {
 		this.getMain().push(this.station);		
 	},
 	
-	onStationSelect: function(list, index, node, rec) {
+	onStationSelect: function(list, rec) {
 		'use strict';
 		this.showStation(rec);
-    },
+	},
 	
 	onSearchClearIconTap: function(){
 		'use strict';
@@ -98,11 +111,16 @@ Ext.define("Bicycle.controller.BicycleController", {
 	
 	onSegmentedButtonToggle : function(seg, btn) {
 		'use strict';
+		this.switchView(btn.config.text === 'Map');
+	},
+
+	switchView: function(map){
+		'use strict';
 		
 		var m = this.getMap();
 		var s = this.getStationListView();
 		var l = this.getLocateMe();
-		if (btn.config.text === 'Map')
+		if (map)
 		{
 			s.hide();
 			m.show();
@@ -111,7 +129,7 @@ Ext.define("Bicycle.controller.BicycleController", {
 			s.show();
 			m.hide();
 			l.disable();
-		}
+		}		
 	},
 		
 	onMapRender : function(comp, map) {
@@ -146,53 +164,59 @@ Ext.define("Bicycle.controller.BicycleController", {
 			self.infowindow.close();
 		}); 
 		
-		setTimeout(function(){
-			var bicycles = Ext.getStore('Bicycles');
-			bicycles.each(function(rec){
-				var icon, cap = rec.get('capacity'), avail = rec.get('availBike');
-				if (avail){
-					icon = (cap - avail) ? 'normal.png' : 'full.png';
-				}
-				else {
-					icon = 'none.png';
-				}
-				
-				icon = 'marker.png';
-				var pos = new google.maps.LatLng(rec.get('lat'), rec.get('lng'));
-				var marker = new google.maps.Marker({
-									map:map,
-									position: pos,
-									title: rec.get('name'),
+		setTimeout(function(){self.addMarkers(map);}, 800);
+	},
+	
+	addMarkers: function(map){
+		'use strict';
+		var self = this;
+		self.markers = {};
+		
+		var bicycles = Ext.getStore('Bicycles');
+		bicycles.each(function(rec){
+			var icon, cap = rec.get('capacity'), avail = rec.get('availBike');
+			if (avail){
+				icon = (cap - avail) ? 'normal.png' : 'full.png';
+			}
+			else {
+				icon = 'none.png';
+			}
+			
+			var pos = new google.maps.LatLng(rec.get('lat'), rec.get('lng'));
+			var marker = new google.maps.Marker({
+								map:map,
+								position: pos,
+								title: rec.get('name'),
 /*									icon: new google.maps.Marker({
-										url: 'resource/' + icon,
-										scaledSize: new google.maps.Size(32, 32),
-										anchor: new google.maps.Point(16, 32)
-									})
+									url: 'resource/' + icon,
+									scaledSize: new google.maps.Size(32, 32),
+									anchor: new google.maps.Point(16, 32)
+								})
 */				});
 				
-				google.maps.event.addListener(marker, 'click', function() {
-					self.infowindow.setContent('<div id="infowindow" class="phoneytitle">' + rec.get('name')
-						+ '&nbsp;[' + rec.get('availBike') 
-						+ '/' + rec.get('capacity') + ']<div class="phoneytext">' + rec.get('address') + '</div></div>'
-					);
-					if (self.infoWindowHandler) {
-						google.maps.event.removeListener(self.infoWindowHandler);
-					}
+			self.markers[rec.get('id')] = marker;
+			
+			google.maps.event.addListener(marker, 'click', function() {
+				console.log('click on a marker');
+				self.infowindow.setContent('<div id="infowindow" class="phoneytitle">' + rec.get('name')
+					+ '&nbsp;[' + rec.get('availBike') 
+					+ '/' + rec.get('capacity') + ']<div class="phoneytext">' + rec.get('address') + '</div></div>'
+				);
+				if (self.infowndHandler) {
+					google.maps.event.removeListener(self.infowndHandler);
+				}
 
-					self.infowindow.open(map, this);
-					
-					//FIXME: as InfoBubble seems not to have a domready event(nor any event actually), I have to bind the callback the dirty way.
-					setTimeout(function(){
-						self.infoWindowHandler = google.maps.event.addDomListener(
-							document.getElementById('infowindow'), 'click', function(){
-								self.showStation(rec);
-							}
-						);
-					}, 500);					
-					return;
-					
-				});
+				self.infowindow.open(map, this);
+				
+				//FIXME: as InfoBubble seems not to have a domready event(nor any event actually), I have to bind the callback the dirty way.
+				setTimeout(function(){
+					self.infowndHandler = google.maps.event.addDomListener(
+						document.getElementById('infowindow'), 'click', function(){
+							self.showStation(rec);
+						}
+					);
+				}, 500);
 			});
-		}, 800);
-	},
+		});
+	}
 });

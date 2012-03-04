@@ -39,6 +39,8 @@ Ext.define("Bicycle.view.Subcontainer", {
 					'<span>{address}&nbsp;</span>'
 				].join(''),
 				
+				onItemDisclosure: true,
+				
 				items: [
 					{
 						xtype: 'toolbar',
