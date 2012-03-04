@@ -15,10 +15,9 @@ Ext.define('Bicycle.view.Station', {
 				tpl: [
 					'<div>&nbsp;</div>',
 					'<img class="stationimage" src="http://www.subicycle.com/szmap/img/{id}.jpg"/>',
-					'<div class="phoneytitle">{name}</div>',
-					'<div class="phoneytext">{address}</div>',
-					'<div>Capacity:{capacity}</div>',
-					'<div>Available:{availBike}</div>',
+					'<div class="stationaddress">{address}</div>',
+					'<div class="stationaddress">Capacity:{capacity}</div>',
+					'<div class="stationaddress">Available:{availBike}</div>',
 						
 				].join('')
 			}
