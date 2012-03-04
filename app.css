@@ -1,6 +1,6 @@
-#stationimage{display: block;
+.stationimage{display: block;
     margin-left: auto;
-    margin-right: auto; height:150px;width:275px;margin-bottom:10px; margin-top:10px;background-size:cover;background-position:center center;-webkit-border-radius:10px;border-radius:10px;border:1px solid #444;-webkit-box-shadow:inset 0 0 2px rgba(0, 0, 0, 0.4)}
+    margin-right: auto; height:150px;width:275px;margin-bottom:10px; background-size:cover;background-position:center center;-webkit-border-radius:10px;border-radius:10px;border:1px solid #444;-webkit-box-shadow:inset 0 0 2px rgba(0, 0, 0, 0.4)}
 
 
 	.phoney {

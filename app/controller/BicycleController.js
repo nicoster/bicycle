@@ -43,6 +43,7 @@ Ext.define("Bicycle.controller.BicycleController", {
 		
 		var marker = this.markers[rec.get('id')];
 		this.map.panTo(marker.position);
+		this.map.setZoom(14);
 		google.maps.event.trigger(marker, 'click');
 	},
 	
