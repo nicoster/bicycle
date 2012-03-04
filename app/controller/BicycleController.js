@@ -11,6 +11,7 @@ Ext.define("Bicycle.controller.BicycleController", {
 			stationListView : 'subcontainer list',
 			locateMe: '#locateme',
 			search: 'searchfield',
+			stations: 'list',
 		},
 		control: {
 			map: {
@@ -25,9 +26,32 @@ Ext.define("Bicycle.controller.BicycleController", {
 			search: {
 				clearicontap: 'onSearchClearIconTap',
 				keyup: 'onSearchKeyUp'
-			}
+			},
+			stations: {
+                itemtap: 'onStationSelect'
+            },			
 		}
 	},
+	
+	showStation: function(rec){
+		'use strict';
+		if (!this.station) 
+		{
+			this.station = Ext.create('Bicycle.view.Station');
+		}
+
+		// Bind the record onto the show contact view
+		this.station.setRecord(rec);
+		this.station.config.title = rec.get('name');
+
+		// Push the show contact view into the navigation view
+		this.getMain().push(this.station);		
+	},
+	
+	onStationSelect: function(list, index, node, rec) {
+		'use strict';
+		this.showStation(rec);
+    },
 	
 	onSearchClearIconTap: function(){
 		'use strict';
@@ -38,29 +62,33 @@ Ext.define("Bicycle.controller.BicycleController", {
 	onSearchKeyUp: function(field) {
 		'use strict';
 		
-		//get the store and the value of the field
-		var value = field.getValue(),
-			store = Ext.getStore('Bicycles');
+		clearTimeout(this.timeid);
+		
+		this.timeid = setTimeout(function(){
+			//get the store and the value of the field
+			var value = field.getValue(),
+				store = Ext.getStore('Bicycles');
 
-		console.log(value);
-		
-		if (! value) {
-			store.clearFilter();
-		}
-		else if (value.indexOf(this.prevCriteria) === -1) {
-			//first clear any current filters on thes tore
-			store.clearFilter();
-			var loop = 0;
-			var reg = new RegExp(value, 'i');
-			store.filter(function(rec) {
-				loop ++;
-				return rec.get('name').match(reg);
-			});			
-			console.log('loop:' + loop);
-		} 
-		
-		this.prevCriteria = store.data.length ? null : value;
-		console.log('prev:' + this.prevCriteria);
+			console.log(value);
+
+
+			if (! value) {
+				store.clearFilter();
+			}
+			else {
+				if (value.indexOf(this.prevCriteria) === -1) {
+					store.clearFilter();
+				}
+
+				var reg = new RegExp(value, 'i');
+				store.filter(function(rec) {
+					return rec.get('name').match(reg) || rec.get('address').match(reg);
+				});			
+			} 
+
+			this.prevCriteria = value;			
+		}, 600);
+	
 	},
 	
 	onLocateMe: function(){
@@ -135,12 +163,12 @@ Ext.define("Bicycle.controller.BicycleController", {
 									map:map,
 									position: pos,
 									title: rec.get('name'),
-									icon: new google.maps.Marker({
+/*									icon: new google.maps.Marker({
 										url: 'resource/' + icon,
 										scaledSize: new google.maps.Size(32, 32),
 										anchor: new google.maps.Point(16, 32)
 									})
-				});
+*/				});
 				
 				google.maps.event.addListener(marker, 'click', function() {
 					self.infowindow.setContent('<div id="infowindow" class="phoneytitle">' + rec.get('name')
@@ -153,21 +181,11 @@ Ext.define("Bicycle.controller.BicycleController", {
 
 					self.infowindow.open(map, this);
 					
-					//FIXME: as InfoBubble seems not to have a domready event(nor any event), I have to bind the callback by the ugly way.
+					//FIXME: as InfoBubble seems not to have a domready event(nor any event actually), I have to bind the callback the dirty way.
 					setTimeout(function(){
 						self.infoWindowHandler = google.maps.event.addDomListener(
 							document.getElementById('infowindow'), 'click', function(){
-								if (!self.station) 
-								{
-									self.station = Ext.create('Bicycle.view.Station');
-								}
-
-								// Bind the record onto the show contact view
-								self.station.setRecord(rec);
-								self.station.config.title = rec.get('name');
-
-								// Push the show contact view into the navigation view
-								self.getMain().push(self.station);
+								self.showStation(rec);
 							}
 						);
 					}, 500);					

@@ -31,7 +31,13 @@ Ext.define("Bicycle.view.Subcontainer", {
 				flex: 1,
 				xtype:'list',
 				store:'Bicycles',
-				itemTpl: '<div>{name}</div><span>{address}</span>',
+				itemTpl: 
+				//'<div class="top"><div class="headshot" style="background-image:url(http://www.subicycle.com/szmap/img/{id}.jpg);"></div><div class="station">{name}<span>{address}</span></div></div>',
+				[
+					'<div class="headshot" style="background-image:url(http://www.subicycle.com/szmap/img/{id}.jpg);"></div>',
+					'{name}',
+					'<span>{address}&nbsp;</span>'
+				].join(''),
 				
 				items: [
 					{
